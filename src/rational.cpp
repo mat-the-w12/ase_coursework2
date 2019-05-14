@@ -65,39 +65,35 @@ bool Rational::operator!=(const Rational & r) const
  *     a*d < c*b
  */
 
-bool Rational::operator<(const Rational & r) const
+bool Rational::operator<(Rational & r)
 {
-	long long int xNum = num * r.denom;
-	long long int yNum = r.num * denom;
+	makeDenomsCommon(*this, r);
 
-	return xNum < yNum;
+	return num < r.num;
     //return num < r.num || denom < r.denom;
 }
 
-bool Rational::operator>(const Rational & r) const
+bool Rational::operator>(Rational & r)
 {
-	long long int xNum = num * r.denom;
-	long long int yNum = r.num * denom;
+	makeDenomsCommon(*this, r);
 
-	return xNum > yNum;
+	return num > r.num;
     //return num > r.num || denom > r.denom;
 }
 
-bool Rational::operator<=(const Rational & r) const
+bool Rational::operator<=(Rational & r)
 {
-	long long int xNum = num * r.denom;
-	long long int yNum = r.num * denom;
+	makeDenomsCommon(*this, r);
 
-	return xNum <= yNum;
+	return num <= r.num;
     //return num <= r.num || denom <= r.denom;
 }
 
-bool Rational::operator>=(const Rational & r) const
+bool Rational::operator>=(Rational & r)
 {
-	long long int xNum = num * r.denom;
-	long long int yNum = r.num * denom;
+	makeDenomsCommon(*this, r);
 
-	return xNum >= yNum;
+	return num >= r.num;
     //return num >= r.num || denom >= r.denom;
 }
 
@@ -111,13 +107,17 @@ bool Rational::operator>=(const Rational & r) const
  *  (a/b) / (c/d) = (a*d) / (b*c)  (division by zero throws a DivideByZeroError)
  */
 
-Rational Rational::operator+(const Rational & r) const
+Rational Rational::operator+(Rational & r)
 {
-    return Rational(num + r.num, denom);
+	makeDenomsCommon(*this, r);
+
+	return Rational(num + r.num, denom);
 }
 
-Rational Rational::operator-(const Rational & r) const
+Rational Rational::operator-(Rational & r)
 {
+	makeDenomsCommon(*this, r);
+
     return Rational(num - r.num, denom);
 }
 
@@ -135,16 +135,18 @@ Rational Rational::operator/(const Rational & r) const
 
 ////////////////////////////////////////////////////////////////////////////////
 
-Rational & Rational::operator+=(const Rational & r)
+Rational & Rational::operator+=(Rational & r)
 {
+	makeDenomsCommon(*this, r);
     num   += r.num;
     //denom += r.denom;
     normalise();
     return *this;
 }
 
-Rational & Rational::operator-=(const Rational & r)
+Rational & Rational::operator-=(Rational & r)
 {
+	makeDenomsCommon(*this, r);
     num   -= r.num;
     //denom -= r.denom;
     normalise();
@@ -174,12 +176,12 @@ Rational & Rational::operator/=(const Rational & r)
 
 Rational Rational::abs(const Rational & r)
 {
-    return Rational(r.num,std::abs(r.denom));
+    return Rational(std::abs(r.num), std::abs(r.denom));
 }
 
 Rational Rational::negate(const Rational & r)
 {
-    return Rational(-(r.num),-(r.denom));
+    return Rational(-(r.num), r.denom);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +240,20 @@ std::istream & operator>>(std::istream & input, Rational & r)
     }
     r.normalise();
     return input;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void Rational::makeDenomsCommon(Rational& x, Rational& y)
+{
+	long long int xOriDenom = x.denom;
+	long long int yOriDenom = y.denom;
+
+	x.num   *= yOriDenom;
+	x.denom *= yOriDenom;
+
+	y.num   *= xOriDenom;
+	y.denom *= xOriDenom;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
