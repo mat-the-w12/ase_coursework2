@@ -33,22 +33,22 @@ namespace ExactArithmetic
       explicit Rational(const std::string &);
 
       //  Arithmetic Operators
-      Rational operator+(const Rational &) const;
-      Rational operator-(const Rational &) const;
+      Rational operator+(Rational &);
+      Rational operator-(Rational &);
       Rational operator*(const Rational &) const;
       Rational operator/(const Rational &) const; // Division by zero throws a DivideByZeroError
 
       // Comparison operators
-      bool operator<(const Rational &) const;
-      bool operator>(const Rational &) const;
-      bool operator<=(const Rational &) const;
-      bool operator>=(const Rational &) const;
+      bool operator<(Rational &);
+      bool operator>(Rational &);
+      bool operator<=(Rational &);
+      bool operator>=(Rational &);
       bool operator==(const Rational &) const;
       bool operator!=(const Rational &) const;
 
       // Compound Assignment operators
-      Rational & operator+=(const Rational &);
-      Rational & operator-=(const Rational &);
+      Rational & operator+=(Rational &);
+      Rational & operator-=(Rational &);
       Rational & operator*=(const Rational &);
       Rational & operator/=(const Rational &); // Division by zero throws a DivideByZeroError
 
@@ -79,6 +79,13 @@ namespace ExactArithmetic
        * operation that could invalidate it.
        */
       void normalise();
+
+	  /* Makes the denominators of both rationals common to ensure that addition, subtraction,
+	   * and comparison are correct.
+	   * This is done by multiplying the numerator and denominator of each rational by
+	   * the denominator of the other rational, scaling them both up to the same level.
+	   */
+	  void makeDenomsCommon(Rational& x, Rational& y);
   };
 
   /*  Prints the numerator and denominator separated by '/'.
