@@ -64,6 +64,27 @@ BOOST_AUTO_TEST_CASE(not_equals_fail)
 	BOOST_CHECK_EQUAL(Rational(1, 3) != Rational(1, 3), false);
 }
 
+BOOST_AUTO_TEST_CASE(more_than_success)
+{
+	Rational x = Rational(2, 3);
+	Rational y = Rational(1, 3);
+	BOOST_CHECK_EQUAL(x > y, true);
+}
+
+BOOST_AUTO_TEST_CASE(more_than_fail)
+{
+	Rational x = Rational(1, 3);
+	Rational y = Rational(1, 2);
+	BOOST_CHECK_EQUAL(x > y, false);
+}
+
+BOOST_AUTO_TEST_CASE(less_than)
+{
+	Rational x = Rational(1, 3);
+	Rational y = Rational(2, 3);
+	BOOST_CHECK_EQUAL(x < y, true);
+}
+
 BOOST_AUTO_TEST_CASE(add)
 {
 	Rational x = Rational(3, 5);
@@ -90,27 +111,6 @@ BOOST_AUTO_TEST_CASE(divide)
 	Rational x = Rational(5, 8);
 	Rational y = Rational(3, 4);
 	BOOST_CHECK_EQUAL(x / y, Rational(5, 6));
-}
-
-BOOST_AUTO_TEST_CASE(more_than_I)
-{
-	Rational x = Rational(1, 3);
-	Rational y = Rational(2, 3);
-	BOOST_CHECK_EQUAL(x > y, false);
-}
-
-BOOST_AUTO_TEST_CASE(more_than_II)
-{
-	Rational x = Rational(1, 3);
-	Rational y = Rational(1, 2);
-	BOOST_CHECK_EQUAL(x > y, false);
-}
-
-BOOST_AUTO_TEST_CASE(less_than)
-{
-	Rational x = Rational(1, 3);
-	Rational y = Rational(2, 3);
-	BOOST_CHECK_EQUAL(x < y, true);
 }
 
 BOOST_AUTO_TEST_CASE(output)
